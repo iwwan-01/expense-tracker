@@ -5,19 +5,23 @@ import { IncomeExpenses } from './components/IncomeExpenses';
 import { TransactionList } from './components/TransactionList';
 import { AddTransaction } from './components/AddTransaction';
 
+import { GlobalProvider } from './context/GlobalState';
+
 const windowHeight = Dimensions.get('window').height;
 
 const App: React.FC = () => {
   return (
-    <View style={styles.body}>
-      <Header />
-      <View style={styles.container}>
-        <Balance />
-        <IncomeExpenses />
+    <GlobalProvider>
+      <View style={styles.body}>
+        <Header />
+        <View style={styles.container}>
+          <Balance />
+          <IncomeExpenses />
+        </View>
+        <TransactionList />
+        <AddTransaction />
       </View>
-      <TransactionList />
-      <AddTransaction />
-    </View>
+    </GlobalProvider>
   );
 };
 
@@ -39,6 +43,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 30,
     borderColor: '#dedede',
+    backgroundColor: '#29304e',
   },
 });
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {
   View,
   Text,
@@ -6,12 +6,16 @@ import {
   TextInput,
   Platform,
   TextStyle,
+  Pressable,
 } from 'react-native';
 import { Fonts, Typography } from '../styles';
 
 export const AddTransaction = () => {
   const [transactionNote, setTransactionNote] = useState('');
   const [transactionValue, setTransactionValue] = useState('');
+  const [transactionType, setTransactionType] = useState('');
+
+  const addTransaction = () => {};
 
   return (
     <View style={styles.container}>
@@ -34,6 +38,18 @@ export const AddTransaction = () => {
           value={transactionValue}
         />
       </View>
+      <View>
+        <Text style={styles.transactionFieldLabel}>Transaction Type</Text>
+        <TextInput
+          style={styles.transactionFieldTextInput}
+          placeholder='Please enter a transaction value'
+          onChangeText={setTransactionType}
+          value={transactionType}
+        />
+      </View>
+      <Pressable style={styles.button} onPress={addTransaction}>
+        <Text style={styles.buttonText}>Add a transaction</Text>
+      </Pressable>
     </View>
   );
 };
@@ -61,5 +77,18 @@ const styles = StyleSheet.create({
     borderColor: '#dedede',
     paddingVertical: 5,
     paddingLeft: 15,
+  } as TextStyle,
+  button: {
+    marginTop: 20,
+    paddingVertical: 5,
+    borderRadius: 40,
+    backgroundColor: '#ff7f41',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  buttonText: {
+    fontSize: 16,
+    ...Fonts.poppinsSemiBold[Platform.OS],
+    color: 'white',
   } as TextStyle,
 });
