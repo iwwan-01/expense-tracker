@@ -5,7 +5,8 @@ import { Fonts, Typography } from '../styles';
 import { GlobalContext } from '../context/GlobalState';
 
 export const IncomeExpenses: React.FC = () => {
-  const { transactions } = useContext(GlobalContext);
+  const { state } = useContext(GlobalContext);
+  const { transactions } = state;
 
   const income = transactions
     .filter((transaction) => transaction.type === 'income')

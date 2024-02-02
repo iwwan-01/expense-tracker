@@ -1,4 +1,7 @@
-import { useState } from 'react';
+// This package requires additional imports on React Native! 👇🏻
+import { v4 as uuidv4 } from 'uuid';
+// import RNPickerSelect from 'react-native-picker-select';
+import React, { useState, useContext } from 'react';
 import {
   View,
   Text,
@@ -10,12 +13,25 @@ import {
 } from 'react-native';
 import { Fonts, Typography } from '../styles';
 
-export const AddTransaction = () => {
+import { GlobalContext } from '../context/GlobalState';
+
+export const AddTransaction: React.FC = () => {
   const [transactionNote, setTransactionNote] = useState('');
   const [transactionValue, setTransactionValue] = useState('');
   const [transactionType, setTransactionType] = useState('');
 
-  const addTransaction = () => {};
+  const { addTransaction } = useContext(GlobalContext);
+
+  const handleSubmit = () => {
+    const newTransaction = {
+      id: uuidv4(),
+      type: transactionType.toLowerCase(),
+      value: parseFloat(transactionValue.replace(/,/g, '.')),
+      note: transactionNote,
+    };
+
+    addTransaction(newTransaction);
+  };
 
   return (
     <View style={styles.container}>
@@ -39,6 +55,13 @@ export const AddTransaction = () => {
         />
       </View>
       <View>
+        {/* <RNPickerSelect
+          onValueChange={(value) => setTransactionType(value)}
+          items={[
+            { label: 'Expense', value: 'expense' },
+            { label: 'Income', value: 'income' },
+          ]}
+        /> */}
         <Text style={styles.transactionFieldLabel}>Transaction Type</Text>
         <TextInput
           style={styles.transactionFieldTextInput}
@@ -47,7 +70,7 @@ export const AddTransaction = () => {
           value={transactionType}
         />
       </View>
-      <Pressable style={styles.button} onPress={addTransaction}>
+      <Pressable style={styles.button} onPress={handleSubmit}>
         <Text style={styles.buttonText}>Add a transaction</Text>
       </Pressable>
     </View>

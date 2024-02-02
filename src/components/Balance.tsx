@@ -5,7 +5,9 @@ import { Fonts, Typography } from '../styles';
 import { GlobalContext } from '../context/GlobalState';
 
 export const Balance: React.FC = () => {
-  const { transactions } = useContext(GlobalContext);
+  const { state } = useContext(GlobalContext);
+
+  const { transactions } = state;
 
   const income = transactions
     .filter((transaction) => transaction.type === 'income')
@@ -19,7 +21,7 @@ export const Balance: React.FC = () => {
 
   const total = (income - expenses).toFixed(2);
   // Replace with ExchangeRate-API 👇🏻
-  const totalEUR = (parseInt(total) / 1.95).toFixed(2);
+  const totalEUR = (parseFloat(total) / 1.95).toFixed(2);
 
   return (
     <View>

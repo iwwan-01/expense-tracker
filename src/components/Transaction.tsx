@@ -1,10 +1,22 @@
-import { View, Text, StyleSheet, Platform, TextStyle } from 'react-native';
+import React, { useContext } from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Platform,
+  TextStyle,
+  Pressable,
+} from 'react-native';
 import { Fonts } from '../styles';
 import { ITransaction } from '../types';
+
+import { GlobalContext } from '../context/GlobalState';
 
 export const Transaction: React.FC<{ transaction: ITransaction }> = ({
   transaction,
 }) => {
+  const { deleteTransaction } = useContext(GlobalContext);
+
   const transactionSign = transaction.type === 'expense' ? '- ' : '+ ';
   const transactionStyle =
     transaction.type === 'expense'
@@ -18,6 +30,12 @@ export const Transaction: React.FC<{ transaction: ITransaction }> = ({
         {transactionSign}
         {transaction.value}
       </Text>
+      <Pressable
+        style={styles.deleteButton}
+        onPress={() => deleteTransaction(transaction.id)}
+      >
+        <Text style={styles.deleteButtonText}>X</Text>
+      </Pressable>
     </View>
   );
 };
@@ -32,6 +50,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     position: 'relative',
     marginVertical: 2,
+    paddingRight: 20,
   },
   transactionNote: {
     margin: 0,
@@ -51,4 +70,13 @@ const styles = StyleSheet.create({
   transactionMinus: {
     color: '#c0392b',
   },
+  deleteButton: {
+    position: 'absolute',
+    right: 0,
+    paddingTop: 2,
+    paddingHorizontal: 5,
+  },
+  deleteButtonText: {
+    ...Fonts.poppinsLight[Platform.OS],
+  } as TextStyle,
 });

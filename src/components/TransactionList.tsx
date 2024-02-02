@@ -13,18 +13,27 @@ import { Transaction } from './Transaction';
 import { GlobalContext } from '../context/GlobalState';
 
 export const TransactionList: React.FC = () => {
-  const { transactions } = useContext(GlobalContext);
+  const { state } = useContext(GlobalContext);
+  const { transactions } = state;
 
   return (
     <View>
       <Text style={styles.transactionsLabel}>Transactions</Text>
-      <FlatList
-        style={styles.list}
-        data={transactions}
-        renderItem={({ item: transaction }) => (
-          <Transaction transaction={transaction} />
-        )}
-      ></FlatList>
+      {transactions.length === 0 ? (
+        <View style={styles.list}>
+          <Text style={styles.emptyListText}>
+            You have not added any transactions yet.
+          </Text>
+        </View>
+      ) : (
+        <FlatList
+          style={styles.list}
+          data={transactions}
+          renderItem={({ item: transaction }) => (
+            <Transaction transaction={transaction} />
+          )}
+        ></FlatList>
+      )}
     </View>
   );
 };
@@ -37,4 +46,11 @@ const styles = StyleSheet.create({
     width: 350,
     padding: 0,
   },
+  emptyListText: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    textAlign: 'center',
+    ...Fonts.poppinsLight[Platform.OS],
+  } as TextStyle,
 });
