@@ -1,6 +1,5 @@
 // This package requires additional imports on React Native! 👇🏻
 import { v4 as uuidv4 } from 'uuid';
-// import RNPickerSelect from 'react-native-picker-select';
 import React, { useState, useContext } from 'react';
 import {
   View,
@@ -11,6 +10,7 @@ import {
   TextStyle,
   Pressable,
 } from 'react-native';
+import { Picker } from 'react-native-web';
 import { Fonts, Typography } from '../styles';
 
 import { GlobalContext } from '../context/GlobalState';
@@ -18,7 +18,7 @@ import { GlobalContext } from '../context/GlobalState';
 export const AddTransaction: React.FC = () => {
   const [transactionNote, setTransactionNote] = useState('');
   const [transactionValue, setTransactionValue] = useState('');
-  const [transactionType, setTransactionType] = useState('');
+  const [transactionType, setTransactionType] = useState('expense');
 
   const { addTransaction } = useContext(GlobalContext);
 
@@ -55,20 +55,22 @@ export const AddTransaction: React.FC = () => {
         />
       </View>
       <View>
-        {/* <RNPickerSelect
-          onValueChange={(value) => setTransactionType(value)}
-          items={[
-            { label: 'Expense', value: 'expense' },
-            { label: 'Income', value: 'income' },
-          ]}
-        /> */}
         <Text style={styles.transactionFieldLabel}>Transaction Type</Text>
-        <TextInput
+        <Picker
           style={styles.transactionFieldTextInput}
-          placeholder='Please enter a transaction value'
+          selectedValue={transactionType}
+          onValueChange={(value: string) => setTransactionType(value)}
+        >
+          <Picker.Item label='Expense' value='expense' />
+          <Picker.Item label='Income' value='income' />
+        </Picker>
+        {/* This could be an approach until we figure out cross-platform picker interoperability! 👇🏻 */}
+        {/* <TextInput
+          style={styles.transactionFieldTextInput}
+          placeholder='Please enter a transaction type'
           onChangeText={setTransactionType}
           value={transactionType}
-        />
+        /> */}
       </View>
       <Pressable style={styles.button} onPress={handleSubmit}>
         <Text style={styles.buttonText}>Add a transaction</Text>
